@@ -12,7 +12,7 @@ let pokemonRepository = (function () {
       typeof pokemon === 'object' &&
       'name' in pokemon &&
       'height' in pokemon &&
-      'types' in pokemon
+      'types' in pokemon 
     ) {
     pokemonList.push(pokemon);
   } else {
@@ -58,6 +58,8 @@ let pokemonRepository = (function () {
     height: 0.8,
     types: ['Pure', 'Flying']
   });
+    pokemonRepository.add(item).forEach(function(pokemon){
+     document.write( pokemon.name + " (Height: " + pokemon.height + ".)" + "<br>"); 
 
-    document.write(pokemonRepository.add(item));
-    document.write(pokemonRepository.getAll());
+}
+)
