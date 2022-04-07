@@ -25,6 +25,11 @@ let pokemonRepository = (function () {
   function getAll() {
     return repository;
   }
+
+  // function to show more details about pokemon
+  function showDetails(pokemon){
+    console.log(pokemon);
+  };
   //
   function addListItem(pokemon){
     //targeting class ul in html
@@ -43,12 +48,7 @@ let pokemonRepository = (function () {
       // create new child pokemon
       listItem.appendChild(button);
       repository.appendChild(listItem);
-      
-  };
-// function to show more details about pokemon
-function showDetails(pokemon) {
-  console.log(pokemon);
-}
+    }
   return {
     add: add,
     getAll: getAll,
