@@ -1,21 +1,18 @@
 
 // creating pokemons inside a pokemon list; characters description from pokedex.org
 let pokemonRepository = (function () {
-  let repository = [
-    {name: "Fearrow", height: 1.2, types: ["water", "speed"]}, 
-    {name: "Ivysaur", height: 1, types: ["grass", "poison"]}, 
-    {name: "Charmeleon", height: 1.1, types: ["love", "weather"]}
-  ];
+  let pokemonList = [];
+  // creating the variable to access the API
+  let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
+
 
 // function for adding the new pokemon to be an object
   function add(pokemon) {
     if (
       typeof pokemon === 'object' &&
-      'name' in pokemon &&
-      'height' in pokemon &&
-      'types' in pokemon 
+      'name' in pokemon 
     ) {
-    repository.push(pokemon);
+    pokemonList.push(pokemon);
   } else {
     document.write('Pokémon is not correct');
   }
@@ -23,48 +20,87 @@ let pokemonRepository = (function () {
   
 // function to list out all pokemons
   function getAll() {
-    return repository;
+    return pokemonList;
   }
 
-  // function to show more details about pokemon
-  function showDetails(pokemon){
-    console.log(pokemon);
-  };
   //
   function addListItem(pokemon){
     //targeting class ul in html
-    let repository = document.querySelector('.pokemon-list');
+    let pokemonList = document.querySelector('.pokemon-list');
     // creating list inside ul
-      let listItem = document.createElement('li');
+      let listPokemon = document.createElement('li');
       // creating buttons beside list item
       let button = document.createElement('button');
-      //event listener for my addlist item
-      button.addEventListener('click', showDetails(pokemon))
-    
       // assigning text to my buttons with pokemon
       button.innerText = pokemon.name;
       //addinhg a class to my button for css styling
       button.classList.add('pokemon-button');
       // create new child pokemon
-      listItem.appendChild(button);
-      repository.appendChild(listItem);
+      listPokemon.appendChild(button);
+      pokemonList.appendChild(listPokemon);
+      //event listener for my addlist item
+      button.addEventListener('click', function () {
+        showDetails(pokemon);
+        });
     }
+
+    // loading pokemons from API list
+  function loadList() {
+    return fetch(apiUrl).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      json.results.forEach(function (item) {
+        let pokemon = {
+          name: item.name,
+          detailsUrl: item.url
+        };
+        add(pokemon);
+        console.log(pokemon);
+      });
+    }).catch(function (e) {
+      console.error(e);
+    })
+  }
+
+  
+  function loadDetails(item) {
+    let url = item.detailsUrl;
+    return fetch(url).then(function (response) {
+      return response.json();
+    }).then(function (details) {
+      // Now we add the details to the item
+      item.imageUrl = details.sprites.front_default;
+      item.height = details.height;
+      item.types = details.types;
+    }).catch(function (e) {
+      console.error(e);
+    });
+  }
+
+  // function to show more details about pokemon
+  function showDetails(pokemon) {
+    pokemonRepository.loadDetails(pokemon).then(function () {
+      console.log(pokemon);
+    });
+  }
+
   return {
     add: add,
     getAll: getAll,
-    addListItem: addListItem
+    addListItem: addListItem,
+    loadList: loadList,
+    loadDetails: loadDetails,
+    showDetails: showDetails
   };
 })();
    
-    //Add new pokemon
-    pokemonRepository.add({
-      name: 'Pidgey',
-      height: 0.8,
-      types: ['Pure', 'Flying']});
-
+  
  // writing out pokemons using the foreach loop
-    pokemonRepository.getAll().forEach(function (pokemon) {
-      pokemonRepository.addListItem(pokemon);
+ pokemonRepository.loadList().then(function() {
+  // Now the data is loaded!
+  pokemonRepository.getAll().forEach(function(pokemon){
+    pokemonRepository.addListItem(pokemon);
   });
+});
 
   
