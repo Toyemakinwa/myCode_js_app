@@ -31,12 +31,15 @@ let pokemonRepository = (function () {
     let pokemonList = document.querySelector('.pokemon-list');
     // creating list inside ul
       let listPokemon = document.createElement('li');
+      listPokemon.classList.add('list-group-item');
       // creating buttons beside list item
       let button = document.createElement('button');
       // assigning text to my buttons with pokemon
       button.innerText = pokemon.name;
       //addinhg a class to my button for css styling
-      button.classList.add('pokemon-button');
+      button.classList.add('"btn", "btn-info", "btn-lg", "w-100"');
+      button.setAttribute('data-toggle', 'modal');
+      button.setAttribute('data-target','#pokemon-modal')
       // create new child pokemon
       listPokemon.appendChild(button);
       pokemonList.appendChild(listPokemon);
@@ -80,17 +83,22 @@ let pokemonRepository = (function () {
   }
 //creating a modal to show title and text
   function showModal(pokemon){
+    let modalBody = $(".modal-body");
+    let modalTitle = $(".modal-title");
+    let modalHeader = $(".modal-header");
+    modalTitle.empty();
+    modalBody.empty();
     // this clears exixting html element
-    modalContainer.innerHTML= "";
+   // modalContainer.innerHTML= "";
     //we then create a new block for the modal class
-    let modal= document.createElement("div");
-    modal.classList.add("modal");
+    //let modal= document.createElement("div");
+    //modal.classList.add("modal");
 
     // also create a button to close the modal
-    let closeButtonElement= document.createElement("button");
-    closeButtonElement.classList.add("modal-close");
-    closeButtonElement.innerText= "close";
-    closeButtonElement.addEventListener("click", hideModal);
+    //let closeButtonElement= document.createElement("button");
+    //closeButtonElement.classList.add("modal-close");
+    //closeButtonElement.innerText= "close";
+    //closeButtonElement.addEventListener("click", hideModal);
 
     //Now we create the title element for the modal
     let titleElement= document.createElement("h1");
@@ -125,13 +133,15 @@ let pokemonRepository = (function () {
       }
     });
 
-    //this also hides the modal container when you click outside of it
-    modalContainer.addEventListener("click", (e) => {
-      let target= e.target;
-      if (target === modalContainer){
+    modalContainer.addEventListener('click', (e) => {
+      // Since this is also triggered when clicking INSIDE the modal container,
+      // We only want to close if the user clicks directly on the overlay
+      let target = e.target;
+      if (target === modalContainer) {
         hideModal();
       }
     });
+    
 
   // function to show more details about pokemon
   function showDetails(pokemon) {
@@ -160,5 +170,6 @@ let pokemonRepository = (function () {
     pokemonRepository.addListItem(pokemon);
   });
 });
+
 
   
