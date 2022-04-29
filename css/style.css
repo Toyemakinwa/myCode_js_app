@@ -5,13 +5,23 @@
 * Browsers: last 2 version
 */
 
-
+.pokemon-list{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 20px;
+    padding: 15px;
+    
+}
 .extra-top {
     margin-top: 60px;
   }
 
   .pokedex-custom-font {
     font-family: 'Ranchers', cursive;
+  }
+  .pokedex-header{
+    display: inline-block;
+    margin-top: 60px;
   }
 
   .list-group-item {
@@ -29,9 +39,23 @@
     color: #fff;
     font-family: 'Ranchers', cursive;
   }
-  .pokeapi{
-      float: right;
+  .modal-content{
+      display: inline-block;
+        margin: auto;
+        box-sizing: border-box;
+        padding: 15px;
+        width: 300px;
+        height: 300px;
+        text-align: left;
+        position: fixed;
+        left: 0;
+        right: 0;
+        margin: auto;
+        background: #ccc;
+        border-radius: 5px;
+        
   }
+  
 
 
     
