@@ -2,7 +2,7 @@
 // creating pokemons inside a pokemon list; characters description from pokedex.org
 let pokemonRepository = (function () {
   //first we create a modal container by btargetingnthe class in the HTML
-  let pokemonModal= document.querySelector("#pokemonModal");
+  let pokemonModal= document.querySelector(".modal-body");
   let pokemonList = [];
   // creating the variable to access the API
   let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
@@ -26,30 +26,31 @@ let pokemonRepository = (function () {
   }
 
   //
-  function addListItem(pokemon){
-    //targeting class ul in html
-    let pokemonList = document.querySelector('.pokemon-list');
-    // creating list inside ul
-      let listPokemon = document.createElement('li');
-      listPokemon.classList.add('list-group-item');
-      // creating buttons beside list item
-      let button = document.createElement('button');
-      // assigning text to my buttons with pokemon
-      button.innerText = pokemon.name;
-      console.log(button);
-      //addinhg a class to my button for css styling
-      button.classList.add("btn", "btn-info", "btn-lg", "w-100");
-      button.setAttribute('data-toggle', 'modal');
-      button.setAttribute('data-target','#pokemon-modal')
-      // create new child pokemon
-      listPokemon.appendChild(button);
-      pokemonList.appendChild(listPokemon);
-      //event listener for my addlist item
-      button.addEventListener('click', function () {
-        showDetails(pokemon);
-        });
-    }
-
+  function addListItem(pokemon) {
+    let pokemonList = document.querySelector(".pokemon-list");
+    let button = document.createElement("button");
+    // assigning text to my buttons with pokemon
+    button.innerText = pokemon.name;
+    //addinhg a class to my button for css styling
+    button.classList.add(
+      "btn",
+      "btn-info",
+      "btn-lg",
+      "w-70",
+      "my-2",
+      "mx-2",
+      "col-3"
+    );
+    button.setAttribute("data-toggle", "modal");
+    button.setAttribute("data-target", "#pokemonModal");
+    // create new child pokemon
+    // listPokemon.appendChild(button);
+    pokemonList.appendChild(button);
+    //event listener for my addlist item
+    button.addEventListener("click", function (e) {
+      showDetails(pokemon);
+    });
+  }
     // loading pokemons from API list
   function loadList() {
     return fetch(apiUrl).then(function (response) {
@@ -87,14 +88,7 @@ let pokemonRepository = (function () {
     // this clears exixting html element
     pokemonModal.innerHTML= "";
     //we then create a new block for the modal class
-    let modal= document.createElement("div");
-    modal.classList.add("modal-content");
-
-    // also create a button to close the modal
-    let closeButtonElement= document.createElement("button");
-    closeButtonElement.classList.add("close");
-    closeButtonElement.setAttribute("data-dismiss", "modal");
-    closeButtonElement.innerText= "X";
+    let modal= document.getElementById("pokemonModalContent");
 
     //Now we create the title element for the modal
     let titleElement= document.createElement("h1");
@@ -108,12 +102,16 @@ let pokemonRepository = (function () {
     let pokemonImg = document.createElement('img');
      pokemonImg.src = pokemon.imageUrl;
 
+      // also create a button to close the modal
+   // let closeButtonElement= document.createElement("button");
+    //closeButtonElement.setAttribute("data-dismiss", "modal");
+    //closeButtonElement.innerText= "close";
+
     //Now we add it to the HTML
-    modal.appendChild(closeButtonElement);
     modal.appendChild(titleElement);
     modal.appendChild(contentElement);
     modal.appendChild(pokemonImg);
-    pokemonModal.appendChild(modal);
+    //modal.appendChild(closeButtonElement);
   }
   
   // function to show more details about pokemon
